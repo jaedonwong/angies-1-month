@@ -1,9 +1,14 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import Countdown from './Countdown'
 import PhotoStripSilhouette from './PhotoStripSilhouette'
+import CameraFeed from './CameraFeed'
+import { useCamera } from '../hooks/useCamera'
+import { ENTER_REVEAL_MS } from './photobooth/constants'
 
 export default function Interior({
-  visible,
+  isInside,
+  isRevealingCamera,
+  cameraActive,
   isCountingDown,
   countdownValue,
   isDispensing,
@@ -13,12 +18,19 @@ export default function Interior({
   onStripClick,
   canTakePhoto,
 }) {
+  const { videoRef, ready, error } = useCamera(cameraActive)
+  const isVisible = isInside || isRevealingCamera
+
   return (
     <motion.div
-      className="fixed inset-0 z-10 flex flex-col items-center justify-center overflow-hidden"
+      className="fixed inset-0 z-30 flex flex-col items-center justify-center overflow-hidden"
       initial={{ opacity: 0 }}
-      animate={{ opacity: visible ? 1 : 0 }}
-      transition={{ duration: 0.8, delay: 0.3 }}
+      animate={{ opacity: isVisible ? 1 : 0 }}
+      transition={{
+        duration: isRevealingCamera ? ENTER_REVEAL_MS / 1000 : 0,
+        ease: 'easeOut',
+      }}
+      style={{ pointerEvents: isVisible ? 'auto' : 'none' }}
     >
       {/* Interior ambience */}
       <div
@@ -40,11 +52,7 @@ export default function Interior({
         <div className="relative w-full rounded-2xl border-4 border-[#4a2f1f] bg-gradient-to-b from-[#3d2418] to-[#2a1810] p-4 shadow-[inset_0_4px_20px_rgba(0,0,0,0.5),0_20px_60px_rgba(0,0,0,0.5)]">
           {/* Screen area */}
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg border-2 border-booth-gold/25 bg-black">
-            {/* Camera placeholder / blurred overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-950/40 to-rose-950/30">
-              <div className="absolute inset-0 backdrop-blur-md" />
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIvPjwvc3ZnPg==')] opacity-50" />
-            </div>
+            <CameraFeed videoRef={videoRef} ready={ready} error={error} />
 
             {/* Screen message */}
             <AnimatePresence>
