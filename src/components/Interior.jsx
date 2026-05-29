@@ -3,11 +3,10 @@ import Countdown from './Countdown'
 import PhotoStripSilhouette from './PhotoStripSilhouette'
 import CameraFeed from './CameraFeed'
 import { useCamera } from '../hooks/useCamera'
-import { ENTER_REVEAL_MS } from './photobooth/constants'
+import { enterFadeTransition } from './photobooth/enterMotion'
 
 export default function Interior({
   isInside,
-  isRevealingCamera,
   isEntering,
   cameraActive,
   isCountingDown,
@@ -20,20 +19,25 @@ export default function Interior({
   canTakePhoto,
 }) {
   const { videoRef, ready, error } = useCamera(cameraActive)
-  const isVisible = isInside || isRevealingCamera
+  const isVisible = isInside || isEntering
 
   return (
     <motion.div
       className={`fixed inset-0 flex flex-col items-center justify-center overflow-hidden ${
         isEntering ? 'z-40' : 'z-30'
       }`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{
-        duration: isRevealingCamera ? ENTER_REVEAL_MS / 1000 : 0,
-        ease: 'easeOut',
+      initial={false}
+      animate={{
+        opacity: isInside ? 1 : isEntering ? [0, 0, 1] : 0,
       }}
-      style={{ pointerEvents: isVisible ? 'auto' : 'none' }}
+      transition={
+        isEntering && !isInside ? enterFadeTransition : { duration: 0 }
+      }
+      style={{
+        pointerEvents: isVisible ? 'auto' : 'none',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
+      }}
     >
       {/* Interior ambience */}
       <div

@@ -1,9 +1,6 @@
 import { useCallback, useState } from 'react'
 import { pickRandomStrip } from '../data/photoStrips'
-import {
-  ENTER_DURATION_MS,
-  ENTER_INTERIOR_PEEK_MS,
-} from '../components/photobooth/constants'
+import { ENTER_DURATION_MS } from '../components/photobooth/constants'
 
 export const BOOTH_STATE = {
   EXTERIOR: 'exterior',
@@ -20,19 +17,12 @@ export function usePhotoBooth() {
   const [showFlash, setShowFlash] = useState(false)
   const [isDispensing, setIsDispensing] = useState(false)
   const [hasDispensedStrip, setHasDispensedStrip] = useState(false)
-  const [isRevealingCamera, setIsRevealingCamera] = useState(false)
 
   const enterBooth = useCallback(() => {
     setBoothState(BOOTH_STATE.ENTERING)
-    setIsRevealingCamera(false)
-
-    setTimeout(() => {
-      setIsRevealingCamera(true)
-    }, ENTER_INTERIOR_PEEK_MS)
 
     setTimeout(() => {
       setBoothState(BOOTH_STATE.INTERIOR)
-      setIsRevealingCamera(false)
     }, ENTER_DURATION_MS)
   }, [])
 
@@ -97,7 +87,6 @@ export function usePhotoBooth() {
     showFlash,
     isDispensing,
     hasDispensedStrip,
-    isRevealingCamera,
     enterBooth,
     takePhoto,
     openDetailView,

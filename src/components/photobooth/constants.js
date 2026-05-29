@@ -18,14 +18,11 @@ export const BOOTH = {
   redText: '#C41E3A',
 }
 
-/** Step-in transition — zoom + curtain part (1.2–1.8s total) */
+/** Step-in transition — single 1.6s timeline */
 export const ENTER_ZOOM_SCALE = 14
 export const ENTER_DURATION_MS = 1600
-export const ENTER_CURTAIN_OPEN_DELAY_S = 0.32
-export const ENTER_CURTAIN_OPEN_DURATION_S = 1.05
-export const ENTER_INTERIOR_PEEK_MS = 720
-export const ENTER_REVEAL_MS = 480
 
-/** @deprecated Use ENTER_DURATION_MS */
+/** @deprecated Use enterMotion enterFadeTransition */
+export const ENTER_REVEAL_MS = 1600
 export const ENTER_ZOOM_MS = ENTER_DURATION_MS
 export const ENTER_TOTAL_MS = ENTER_DURATION_MS

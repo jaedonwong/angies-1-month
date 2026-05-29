@@ -1,9 +1,6 @@
 import { motion } from 'framer-motion'
-import {
-  BOOTH,
-  ENTER_CURTAIN_OPEN_DELAY_S,
-  ENTER_CURTAIN_OPEN_DURATION_S,
-} from './constants'
+import { BOOTH } from './constants'
+import { enterTransformTransition, GPU_LAYER } from './enterMotion'
 import HeartBalloon from './HeartBalloon'
 import './booth-illustration.css'
 
@@ -28,13 +25,13 @@ function CurtainHalf({ side, isOpen }) {
       className={`absolute top-0 z-20 h-full w-1/2 overflow-hidden ${
         isLeft ? 'left-0' : 'right-0'
       }`}
+      style={{
+        ...GPU_LAYER,
+        willChange: isOpen ? 'transform' : 'auto',
+      }}
       initial={false}
       animate={{ x: isOpen ? (isLeft ? '-100%' : '100%') : 0 }}
-      transition={{
-        duration: ENTER_CURTAIN_OPEN_DURATION_S,
-        delay: isOpen ? ENTER_CURTAIN_OPEN_DELAY_S : 0,
-        ease: [0.32, 0.72, 0.22, 1],
-      }}
+      transition={enterTransformTransition}
     >
       <div
         className={`curtain-pleats absolute top-0 h-full w-[200%] ${
@@ -116,11 +113,10 @@ function CurtainOpening({ isEntering = false }) {
         <motion.div
           className="pointer-events-none absolute inset-0 z-30"
           initial={false}
-          animate={{ opacity: isEntering ? 0 : 1 }}
+          animate={{ opacity: isEntering ? [1, 0] : 1 }}
           transition={{
-            duration: 0.35,
-            delay: isEntering ? 0.12 : 0,
-            ease: 'easeOut',
+            ...enterTransformTransition,
+            times: [0, 0.28],
           }}
         >
           {balloons.map((b, i) => (

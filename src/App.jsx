@@ -13,7 +13,6 @@ export default function App() {
     showFlash,
     isDispensing,
     hasDispensedStrip,
-    isRevealingCamera,
     enterBooth,
     takePhoto,
     openDetailView,
@@ -45,7 +44,6 @@ export default function App() {
             boothState === BOOTH_STATE.INTERIOR ||
             boothState === BOOTH_STATE.DETAIL
           }
-          isRevealingCamera={isRevealingCamera}
           isEntering={isEntering}
           cameraActive={cameraActive}
           isCountingDown={isCountingDown}
@@ -60,11 +58,7 @@ export default function App() {
       )}
 
       {showExterior && (
-        <Exterior
-          onEnter={enterBooth}
-          isEntering={isEntering}
-          isRevealing={isRevealingCamera}
-        />
+        <Exterior onEnter={enterBooth} isEntering={isEntering} />
       )}
 
       <DetailView
