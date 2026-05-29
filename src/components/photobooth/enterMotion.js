@@ -24,6 +24,13 @@ export const enterFadeTransition = {
   times: [0, 0.42, 1],
 }
 
+/** Exact inverse of enterFadeTransition */
+export const exitFadeTransition = {
+  duration: ENTER_DURATION_S,
+  ease: ENTER_EASE,
+  times: [0, 0.58, 1],
+}
+
 /** Compositor hints — do not set transform here (conflicts with motion scale) */
 export const GPU_LAYER = {
   backfaceVisibility: 'hidden',

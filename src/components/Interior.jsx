@@ -1,11 +1,14 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import Countdown from './Countdown'
 import PhotoStripSilhouette from './PhotoStripSilhouette'
-import { enterFadeTransition } from './photobooth/enterMotion'
+import { enterFadeTransition, exitFadeTransition } from './photobooth/enterMotion'
 
 export default function Interior({
   isInside,
   isEntering,
+  isExiting,
+  onStepOut,
+  showStepOut = false,
   isCountingDown,
   countdownValue,
   isDispensing,
@@ -15,19 +18,28 @@ export default function Interior({
   onStripClick,
   canTakePhoto,
 }) {
-  const isVisible = isInside || isEntering
-
+  const isVisible = isInside || isEntering || isExiting
   return (
     <motion.div
       className={`fixed inset-0 flex flex-col items-center justify-center overflow-hidden ${
-        isEntering ? 'z-40' : 'z-30'
+        isEntering || isExiting ? 'z-40' : 'z-30'
       }`}
       initial={false}
       animate={{
-        opacity: isInside ? 1 : isEntering ? [0, 0, 1] : 0,
+        opacity: isExiting
+          ? [1, 1, 0]
+          : isInside
+            ? 1
+            : isEntering
+              ? [0, 0, 1]
+              : 0,
       }}
       transition={
-        isEntering && !isInside ? enterFadeTransition : { duration: 0 }
+        isExiting
+          ? exitFadeTransition
+          : isEntering && !isInside
+            ? enterFadeTransition
+            : { duration: 0 }
       }
       style={{
         pointerEvents: isVisible ? 'auto' : 'none',
@@ -148,6 +160,17 @@ export default function Interior({
           Take Photo
         </motion.button>
       </div>
+
+      {showStepOut && (
+        <button
+          type="button"
+          onClick={onStepOut}
+          className="fixed right-5 bottom-5 z-50 text-[9px] tracking-[0.22em] text-booth-cream/25 uppercase transition-colors hover:text-booth-cream/45"
+          style={{ fontFamily: 'var(--font-booth)' }}
+        >
+          Step Out of the Booth
+        </button>
+      )}
     </motion.div>
   )
 }

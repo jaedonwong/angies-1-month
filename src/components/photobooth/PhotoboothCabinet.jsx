@@ -17,8 +17,10 @@ function PhotoStripDots() {
   )
 }
 
-function CurtainHalf({ side, isOpen }) {
+function CurtainHalf({ side, isEntering, isExiting }) {
   const isLeft = side === 'left'
+  const openX = isLeft ? '-100%' : '100%'
+  const isMoving = isEntering || isExiting
 
   return (
     <motion.div
@@ -27,10 +29,10 @@ function CurtainHalf({ side, isOpen }) {
       }`}
       style={{
         ...GPU_LAYER,
-        willChange: isOpen ? 'transform' : 'auto',
+        willChange: isMoving ? 'transform' : 'auto',
       }}
-      initial={false}
-      animate={{ x: isOpen ? (isLeft ? '-100%' : '100%') : 0 }}
+      initial={isExiting ? { x: openX } : false}
+      animate={{ x: isEntering ? openX : 0 }}
       transition={enterTransformTransition}
     >
       <div
@@ -92,7 +94,7 @@ function LeftPanel() {
   )
 }
 
-function CurtainOpening({ isEntering = false }) {
+function CurtainOpening({ isEntering = false, isExiting = false }) {
   const balloons = [
     { left: '14%', top: '10%', size: 24 },
     { left: '58%', top: '6%', size: 20 },
@@ -107,16 +109,18 @@ function CurtainOpening({ isEntering = false }) {
       className="relative flex min-h-[220px] flex-col border-x border-black/10 sm:min-h-[268px]"
     >
       <div className="curtain-chamber relative flex-1 overflow-hidden">
-        <CurtainHalf side="left" isOpen={isEntering} />
-        <CurtainHalf side="right" isOpen={isEntering} />
+        <CurtainHalf side="left" isEntering={isEntering} isExiting={isExiting} />
+        <CurtainHalf side="right" isEntering={isEntering} isExiting={isExiting} />
 
         <motion.div
           className="pointer-events-none absolute inset-0 z-30"
-          initial={false}
-          animate={{ opacity: isEntering ? [1, 0] : 1 }}
+          initial={isExiting ? { opacity: 0 } : false}
+          animate={{
+            opacity: isEntering ? [1, 0] : isExiting ? [0, 1] : 1,
+          }}
           transition={{
             ...enterTransformTransition,
-            times: [0, 0.28],
+            times: isExiting ? [0.72, 1] : [0, 0.28],
           }}
         >
           {balloons.map((b, i) => (
@@ -167,7 +171,7 @@ function RightPanel() {
   )
 }
 
-export default function PhotoboothCabinet({ isEntering = false }) {
+export default function PhotoboothCabinet({ isEntering = false, isExiting = false }) {
   return (
     <div className="booth-unit select-none" aria-label="A and J Photos booth exterior">
       {/* Header marquee */}
@@ -185,7 +189,7 @@ export default function PhotoboothCabinet({ isEntering = false }) {
         style={{ backgroundColor: BOOTH.brownDark }}
       >
         <LeftPanel />
-        <CurtainOpening isEntering={isEntering} />
+        <CurtainOpening isEntering={isEntering} isExiting={isExiting} />
         <RightPanel />
       </div>
 

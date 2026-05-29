@@ -14,19 +14,23 @@ export default function App() {
     isDispensing,
     hasDispensedStrip,
     enterBooth,
+    exitBooth,
     takePhoto,
     openDetailView,
     resetToInterior,
   } = usePhotoBooth()
 
   const showExterior =
-    boothState === BOOTH_STATE.EXTERIOR || boothState === BOOTH_STATE.ENTERING
+    boothState === BOOTH_STATE.EXTERIOR ||
+    boothState === BOOTH_STATE.ENTERING ||
+    boothState === BOOTH_STATE.EXITING
   const showInterior =
     boothState === BOOTH_STATE.INTERIOR ||
     boothState === BOOTH_STATE.ENTERING ||
+    boothState === BOOTH_STATE.EXITING ||
     boothState === BOOTH_STATE.DETAIL
   const isEntering = boothState === BOOTH_STATE.ENTERING
-  const cameraActive = boothState !== BOOTH_STATE.EXTERIOR
+  const isExiting = boothState === BOOTH_STATE.EXITING
 
   const canTakePhoto =
     !isCountingDown &&
@@ -45,7 +49,13 @@ export default function App() {
             boothState === BOOTH_STATE.DETAIL
           }
           isEntering={isEntering}
-          cameraActive={cameraActive}
+          isExiting={isExiting}
+          onStepOut={exitBooth}
+          showStepOut={
+            boothState === BOOTH_STATE.INTERIOR &&
+            !isCountingDown &&
+            !isDispensing
+          }
           isCountingDown={isCountingDown}
           countdownValue={countdownValue}
           isDispensing={isDispensing}
@@ -58,7 +68,11 @@ export default function App() {
       )}
 
       {showExterior && (
-        <Exterior onEnter={enterBooth} isEntering={isEntering} />
+        <Exterior
+          onEnter={enterBooth}
+          isEntering={isEntering}
+          isExiting={isExiting}
+        />
       )}
 
       <DetailView

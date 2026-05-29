@@ -1,12 +1,30 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { pickRandomStrip } from '../data/photoStrips'
 import { ENTER_DURATION_MS } from '../components/photobooth/constants'
 
 export const BOOTH_STATE = {
   EXTERIOR: 'exterior',
   ENTERING: 'entering',
+  EXITING: 'exiting',
   INTERIOR: 'interior',
   DETAIL: 'detail',
+}
+
+function clearSessionState(setters) {
+  const {
+    setSelectedStrip,
+    setIsCountingDown,
+    setCountdownValue,
+    setShowFlash,
+    setIsDispensing,
+    setHasDispensedStrip,
+  } = setters
+  setSelectedStrip(null)
+  setIsCountingDown(false)
+  setCountdownValue(null)
+  setShowFlash(false)
+  setIsDispensing(false)
+  setHasDispensedStrip(false)
 }
 
 export function usePhotoBooth() {
@@ -25,6 +43,31 @@ export function usePhotoBooth() {
       setBoothState(BOOTH_STATE.INTERIOR)
     }, ENTER_DURATION_MS)
   }, [])
+
+  const exitBooth = useCallback(() => {
+    setBoothState((current) =>
+      current === BOOTH_STATE.INTERIOR ? BOOTH_STATE.EXITING : current,
+    )
+  }, [])
+
+  useEffect(() => {
+    if (boothState !== BOOTH_STATE.EXITING) return undefined
+
+    clearSessionState({
+      setSelectedStrip,
+      setIsCountingDown,
+      setCountdownValue,
+      setShowFlash,
+      setIsDispensing,
+      setHasDispensedStrip,
+    })
+
+    const timer = setTimeout(() => {
+      setBoothState(BOOTH_STATE.EXTERIOR)
+    }, ENTER_DURATION_MS)
+
+    return () => clearTimeout(timer)
+  }, [boothState])
 
   const takePhoto = useCallback(() => {
     if (isCountingDown || isDispensing) return
@@ -88,6 +131,7 @@ export function usePhotoBooth() {
     isDispensing,
     hasDispensedStrip,
     enterBooth,
+    exitBooth,
     takePhoto,
     openDetailView,
     resetToInterior,

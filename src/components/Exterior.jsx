@@ -5,10 +5,11 @@ import { ENTER_ZOOM_SCALE } from './photobooth/constants'
 import {
   enterTransformTransition,
   enterFadeTransition,
+  exitFadeTransition,
   GPU_LAYER,
 } from './photobooth/enterMotion'
 
-export default function Exterior({ onEnter, isEntering }) {
+export default function Exterior({ onEnter, isEntering, isExiting }) {
   const cabinetRef = useRef(null)
   const [transformOrigin, setTransformOrigin] = useState('50% 52%')
 
@@ -33,16 +34,22 @@ export default function Exterior({ onEnter, isEntering }) {
   }, [])
 
   const handleEnter = () => {
-    if (isEntering) return
+    if (isEntering || isExiting) return
     onEnter()
   }
+
+  const showCta = !isEntering && !isExiting
 
   return (
     <motion.div
       className="landing-canvas fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden"
       initial={false}
-      animate={{ opacity: isEntering ? [1, 1, 0] : 1 }}
-      transition={enterFadeTransition}
+      animate={{
+        opacity: isEntering ? [1, 1, 0] : isExiting ? [0, 0, 1] : 1,
+      }}
+      transition={
+        isEntering ? enterFadeTransition : isExiting ? exitFadeTransition : { duration: 0 }
+      }
     >
       <div className="landing-grain" aria-hidden />
       <div className="landing-weave" aria-hidden />
@@ -54,18 +61,20 @@ export default function Exterior({ onEnter, isEntering }) {
           style={{
             transformOrigin,
             ...GPU_LAYER,
-            willChange: isEntering ? 'transform' : 'auto',
+            willChange: isEntering || isExiting ? 'transform' : 'auto',
           }}
-          initial={false}
-          animate={isEntering ? { scale: ENTER_ZOOM_SCALE } : { scale: 1 }}
+          initial={isExiting ? { scale: ENTER_ZOOM_SCALE } : false}
+          animate={{
+            scale: isEntering ? ENTER_ZOOM_SCALE : 1,
+          }}
           transition={enterTransformTransition}
         >
-          <PhotoboothCabinet isEntering={isEntering} />
+          <PhotoboothCabinet isEntering={isEntering} isExiting={isExiting} />
         </motion.div>
       </div>
 
       <AnimatePresence>
-        {!isEntering && (
+        {showCta && (
           <motion.div
             className="relative z-[60] flex flex-col items-center gap-3 px-6 pb-10"
             initial={{ opacity: 1 }}
