@@ -1,8 +1,11 @@
 @import 'tailwindcss';
+@import './components/photobooth/booth-illustration.css';
 
 @theme {
   --font-display: 'Playfair Display', Georgia, serif;
   --font-booth: 'Special Elite', 'Courier New', monospace;
+  --font-booth-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-booth-sans: 'DM Sans', system-ui, sans-serif;
   --color-booth-dark: #0d0a0b;
   --color-booth-wood: #2a1810;
   --color-booth-cream: #f4e8d4;

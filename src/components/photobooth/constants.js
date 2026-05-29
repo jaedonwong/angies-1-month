@@ -1,4 +1,4 @@
-/** Visual tokens matched to photobooth.png */
+/** Antique rose — landing canvas base */
 export const LANDING_BG = '#F8B4AE'
 
 export const BOOTH = {
