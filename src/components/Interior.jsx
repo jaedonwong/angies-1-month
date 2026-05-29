@@ -102,7 +102,7 @@ export default function Interior({
             <AnimatePresence>
               {hasDispensedStrip && !isCountingDown && (
                 <motion.p
-                  className="absolute top-4 left-0 right-0 z-10 text-center text-[10px] tracking-[0.25em] text-booth-gold/70 uppercase"
+                  className="absolute inset-0 z-10 flex items-center justify-center px-6 text-center text-[10px] tracking-[0.25em] text-booth-gold/70 uppercase"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
