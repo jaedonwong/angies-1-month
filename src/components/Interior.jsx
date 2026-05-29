@@ -78,7 +78,7 @@ export default function Interior({
                     Happy 1 Month Baby
                   </p>
                   <p className="mt-3 text-[10px] tracking-[0.3em] text-booth-cream/40 uppercase">
-                    Smile for the camera
+                    Smile. Our Memories Await ♡
                   </p>
                 </motion.div>
               )}
