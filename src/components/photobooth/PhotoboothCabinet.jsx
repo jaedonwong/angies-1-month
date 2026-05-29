@@ -63,7 +63,7 @@ function CurtainOpening() {
   const balloons = [
     { left: '14%', top: '10%', size: 24 },
     { left: '58%', top: '6%', size: 20 },
-    { left: '38%', top: '24%', size: 34, label: 'A♥J', featured: true },
+    { left: '38%', top: '24%', size: 34 },
     { left: '70%', top: '18%', size: 22 },
     { left: '26%', top: '38%', size: 18 },
   ]
