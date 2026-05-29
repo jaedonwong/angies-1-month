@@ -3,8 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import PhotoboothCabinet from './photobooth/PhotoboothCabinet'
 import {
   ENTER_ZOOM_SCALE,
-  ENTER_ZOOM_MS,
+  ENTER_DURATION_MS,
+  ENTER_REVEAL_MS,
 } from './photobooth/constants'
+
+const ZOOM_EASE = [0.22, 0.03, 0.2, 1]
 
 export default function Exterior({ onEnter, isEntering, isRevealing }) {
   const cabinetRef = useRef(null)
@@ -39,7 +42,10 @@ export default function Exterior({ onEnter, isEntering, isRevealing }) {
     <motion.div
       className="landing-canvas fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden"
       animate={{ opacity: isRevealing ? 0 : 1 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
+      transition={{
+        duration: ENTER_REVEAL_MS / 1000,
+        ease: [0.4, 0, 0.2, 1],
+      }}
     >
       <div className="landing-grain" aria-hidden />
       <div className="landing-weave" aria-hidden />
@@ -49,13 +55,18 @@ export default function Exterior({ onEnter, isEntering, isRevealing }) {
           ref={cabinetRef}
           className="w-[min(92vw,500px)] will-change-transform"
           style={{ transformOrigin }}
-          animate={isEntering ? { scale: ENTER_ZOOM_SCALE } : { scale: 1 }}
+          initial={false}
+          animate={
+            isEntering
+              ? { scale: ENTER_ZOOM_SCALE }
+              : { scale: 1 }
+          }
           transition={{
-            duration: ENTER_ZOOM_MS / 1000,
-            ease: [0.42, 0, 0.18, 1],
+            duration: ENTER_DURATION_MS / 1000,
+            ease: ZOOM_EASE,
           }}
         >
-          <PhotoboothCabinet />
+          <PhotoboothCabinet isEntering={isEntering} />
         </motion.div>
       </div>
 
@@ -65,7 +76,7 @@ export default function Exterior({ onEnter, isEntering, isRevealing }) {
             className="relative z-[60] flex flex-col items-center gap-3 px-6 pb-10"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
           >
             <p className="enter-instruction">4 Poses | Click to Enter</p>
 

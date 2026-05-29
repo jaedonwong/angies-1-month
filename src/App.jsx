@@ -46,6 +46,7 @@ export default function App() {
             boothState === BOOTH_STATE.DETAIL
           }
           isRevealingCamera={isRevealingCamera}
+          isEntering={isEntering}
           cameraActive={cameraActive}
           isCountingDown={isCountingDown}
           countdownValue={countdownValue}

@@ -18,9 +18,14 @@ export const BOOTH = {
   redText: '#C41E3A',
 }
 
-/** Zoom scale — curtain (~34% of cabinet width) must fill the viewport */
-export const ENTER_ZOOM_SCALE = 16
+/** Step-in transition — zoom + curtain part (1.2–1.8s total) */
+export const ENTER_ZOOM_SCALE = 14
+export const ENTER_DURATION_MS = 1600
+export const ENTER_CURTAIN_OPEN_DELAY_S = 0.32
+export const ENTER_CURTAIN_OPEN_DURATION_S = 1.05
+export const ENTER_INTERIOR_PEEK_MS = 720
+export const ENTER_REVEAL_MS = 480
 
-export const ENTER_ZOOM_MS = 1500
-export const ENTER_REVEAL_MS = 300
-export const ENTER_TOTAL_MS = ENTER_ZOOM_MS + ENTER_REVEAL_MS
+/** @deprecated Use ENTER_DURATION_MS */
+export const ENTER_ZOOM_MS = ENTER_DURATION_MS
+export const ENTER_TOTAL_MS = ENTER_DURATION_MS

@@ -8,6 +8,7 @@ import { ENTER_REVEAL_MS } from './photobooth/constants'
 export default function Interior({
   isInside,
   isRevealingCamera,
+  isEntering,
   cameraActive,
   isCountingDown,
   countdownValue,
@@ -23,7 +24,9 @@ export default function Interior({
 
   return (
     <motion.div
-      className="fixed inset-0 z-30 flex flex-col items-center justify-center overflow-hidden"
+      className={`fixed inset-0 flex flex-col items-center justify-center overflow-hidden ${
+        isEntering ? 'z-40' : 'z-30'
+      }`}
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
       transition={{

@@ -1,4 +1,9 @@
-import { BOOTH } from './constants'
+import { motion } from 'framer-motion'
+import {
+  BOOTH,
+  ENTER_CURTAIN_OPEN_DELAY_S,
+  ENTER_CURTAIN_OPEN_DURATION_S,
+} from './constants'
 import HeartBalloon from './HeartBalloon'
 import './booth-illustration.css'
 
@@ -15,8 +20,39 @@ function PhotoStripDots() {
   )
 }
 
-function CurtainPleats() {
-  return <div className="curtain-pleats absolute inset-0" />
+function CurtainHalf({ side, isOpen }) {
+  const isLeft = side === 'left'
+
+  return (
+    <motion.div
+      className={`absolute top-0 z-20 h-full w-1/2 overflow-hidden ${
+        isLeft ? 'left-0' : 'right-0'
+      }`}
+      initial={false}
+      animate={{ x: isOpen ? (isLeft ? '-100%' : '100%') : 0 }}
+      transition={{
+        duration: ENTER_CURTAIN_OPEN_DURATION_S,
+        delay: isOpen ? ENTER_CURTAIN_OPEN_DELAY_S : 0,
+        ease: [0.32, 0.72, 0.22, 1],
+      }}
+    >
+      <div
+        className={`curtain-pleats absolute top-0 h-full w-[200%] ${
+          isLeft ? 'left-0' : 'right-0'
+        }`}
+      />
+      <div
+        className={`pointer-events-none absolute top-0 h-full w-3 ${
+          isLeft ? 'right-0' : 'left-0'
+        }`}
+        style={{
+          background: isLeft
+            ? 'linear-gradient(90deg, transparent, rgba(0,0,0,0.22))'
+            : 'linear-gradient(270deg, transparent, rgba(0,0,0,0.22))',
+        }}
+      />
+    </motion.div>
+  )
 }
 
 function LeftPanel() {
@@ -59,7 +95,7 @@ function LeftPanel() {
   )
 }
 
-function CurtainOpening() {
+function CurtainOpening({ isEntering = false }) {
   const balloons = [
     { left: '14%', top: '10%', size: 24 },
     { left: '58%', top: '6%', size: 20 },
@@ -74,30 +110,37 @@ function CurtainOpening() {
       className="relative flex min-h-[220px] flex-col border-x border-black/10 sm:min-h-[268px]"
     >
       <div className="curtain-chamber relative flex-1 overflow-hidden">
-        <CurtainPleats />
+        <CurtainHalf side="left" isOpen={isEntering} />
+        <CurtainHalf side="right" isOpen={isEntering} />
 
-        {balloons.map((b, i) => (
-          <div
-            key={i}
-            className="absolute z-10 flex flex-col items-center"
-            style={{ left: b.left, top: b.top }}
-          >
-            <HeartBalloon
-              size={b.size}
-              label={b.label}
-              showHighlight={b.featured ?? false}
-              className={b.featured ? 'z-20' : ''}
-            />
+        <motion.div
+          className="pointer-events-none absolute inset-0 z-30"
+          initial={false}
+          animate={{ opacity: isEntering ? 0 : 1 }}
+          transition={{
+            duration: 0.35,
+            delay: isEntering ? 0.12 : 0,
+            ease: 'easeOut',
+          }}
+        >
+          {balloons.map((b, i) => (
             <div
-              className="mt-0.5 w-px rounded-full"
-              style={{
-                height: `${40 + i * 10}px`,
-                background: `linear-gradient(180deg, ${BOOTH.redDark}, ${BOOTH.red})`,
-                boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
-              }}
-            />
-          </div>
-        ))}
+              key={i}
+              className="absolute flex flex-col items-center"
+              style={{ left: b.left, top: b.top }}
+            >
+              <HeartBalloon size={b.size} />
+              <div
+                className="mt-0.5 w-px rounded-full"
+                style={{
+                  height: `${40 + i * 10}px`,
+                  background: `linear-gradient(180deg, ${BOOTH.redDark}, ${BOOTH.red})`,
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                }}
+              />
+            </div>
+          ))}
+        </motion.div>
       </div>
 
       <div className="booth-floor h-5 shrink-0" />
@@ -128,7 +171,7 @@ function RightPanel() {
   )
 }
 
-export default function PhotoboothCabinet() {
+export default function PhotoboothCabinet({ isEntering = false }) {
   return (
     <div className="booth-unit select-none" aria-label="A and J Photos booth exterior">
       {/* Header marquee */}
@@ -146,7 +189,7 @@ export default function PhotoboothCabinet() {
         style={{ backgroundColor: BOOTH.brownDark }}
       >
         <LeftPanel />
-        <CurtainOpening />
+        <CurtainOpening isEntering={isEntering} />
         <RightPanel />
       </div>
 
