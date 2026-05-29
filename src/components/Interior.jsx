@@ -1,14 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import Countdown from './Countdown'
 import PhotoStripSilhouette from './PhotoStripSilhouette'
-import CameraFeed from './CameraFeed'
-import { useCamera } from '../hooks/useCamera'
 import { enterFadeTransition } from './photobooth/enterMotion'
 
 export default function Interior({
   isInside,
   isEntering,
-  cameraActive,
   isCountingDown,
   countdownValue,
   isDispensing,
@@ -18,7 +15,6 @@ export default function Interior({
   onStripClick,
   canTakePhoto,
 }) {
-  const { videoRef, ready, error } = useCamera(cameraActive)
   const isVisible = isInside || isEntering
 
   return (
@@ -52,14 +48,18 @@ export default function Interior({
       {/* Booth frame */}
       <div className="relative z-10 flex w-full max-w-lg flex-col items-center px-4">
         <p className="mb-4 text-[10px] tracking-[0.4em] text-booth-gold/60 uppercase">
-          A&amp;J Photos — Interior
+          Reserved for Angie &amp; Jaedon
         </p>
 
         {/* Main booth cabinet */}
         <div className="relative w-full rounded-2xl border-4 border-[#4a2f1f] bg-gradient-to-b from-[#3d2418] to-[#2a1810] p-4 shadow-[inset_0_4px_20px_rgba(0,0,0,0.5),0_20px_60px_rgba(0,0,0,0.5)]">
           {/* Screen area */}
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg border-2 border-booth-gold/25 bg-black">
-            <CameraFeed videoRef={videoRef} ready={ready} error={error} />
+            <div className="absolute inset-0 bg-black" aria-hidden />
+            <div
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,rgba(30,30,35,0.35)_0%,transparent_55%)]"
+              aria-hidden
+            />
 
             {/* Screen message */}
             <AnimatePresence>
