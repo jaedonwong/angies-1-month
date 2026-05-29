@@ -90,7 +90,7 @@ export default function DetailView({ strip, onReset, visible }) {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
         >
-          Step Out of Booth
+          Take Another Photo
         </motion.button>
       </motion.div>
     </motion.div>
