@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import FrameImage from './FrameImage'
 
 export default function PhotoStripSilhouette({ strip, onClick, isDispensing }) {
   if (!strip) return null
@@ -25,8 +26,10 @@ export default function PhotoStripSilhouette({ strip, onClick, isDispensing }) {
           {strip.frames.map((frame) => (
             <div
               key={frame.id}
-              className={`h-10 w-full rounded-[2px] bg-gradient-to-br sm:h-12 ${frame.gradient} opacity-70 transition-opacity group-hover:opacity-90`}
-            />
+              className={`relative h-10 w-full overflow-hidden rounded-[2px] sm:h-12 ${frame.gradient ? `bg-gradient-to-br ${frame.gradient}` : ''}`}
+            >
+              <FrameImage frame={frame} className="opacity-80 transition-opacity group-hover:opacity-95" />
+            </div>
           ))}
         </div>
         <div className="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-black/50 to-transparent" />

@@ -1,35 +1,122 @@
+/** Build image path: /strips/{collection-folder}/{1-4}.jpg */
+export function stripImagePath(collectionFolder, frameNumber) {
+  return `/strips/${collectionFolder}/${frameNumber}.jpg`
+}
+
+function frame(collectionFolder, number, label, gradient, caption) {
+  return {
+    id: number,
+    label,
+    gradient,
+    image: stripImagePath(collectionFolder, number),
+    caption,
+  }
+}
+
 export const PHOTO_STRIPS = [
   {
-    id: 'strip-aurora',
+    id: 'midnight-aurora',
     title: 'Midnight Aurora',
     accent: 'from-violet-900 via-fuchsia-800 to-rose-900',
     frames: [
-      { id: 1, label: 'Frame I', gradient: 'from-indigo-950 to-purple-800' },
-      { id: 2, label: 'Frame II', gradient: 'from-fuchsia-900 to-pink-700' },
-      { id: 3, label: 'Frame III', gradient: 'from-rose-950 to-orange-900' },
-      { id: 4, label: 'Frame IV', gradient: 'from-violet-950 to-indigo-900' },
+      frame(
+        'midnight-aurora',
+        1,
+        'Frame I',
+        'from-indigo-950 to-purple-800',
+        'Replace this with your first memory — one or two sentences about what was happening.',
+      ),
+      frame(
+        'midnight-aurora',
+        2,
+        'Frame II',
+        'from-fuchsia-900 to-pink-700',
+        'Replace this with your second memory for this collection.',
+      ),
+      frame(
+        'midnight-aurora',
+        3,
+        'Frame III',
+        'from-rose-950 to-orange-900',
+        'Replace this with your third memory for this collection.',
+      ),
+      frame(
+        'midnight-aurora',
+        4,
+        'Frame IV',
+        'from-violet-950 to-indigo-900',
+        'Replace this with your fourth memory for this collection.',
+      ),
     ],
   },
   {
-    id: 'strip-golden',
+    id: 'golden-hour',
     title: 'Golden Hour',
     accent: 'from-amber-900 via-orange-800 to-red-900',
     frames: [
-      { id: 1, label: 'Frame I', gradient: 'from-amber-950 to-yellow-800' },
-      { id: 2, label: 'Frame II', gradient: 'from-orange-900 to-amber-700' },
-      { id: 3, label: 'Frame III', gradient: 'from-red-950 to-orange-800' },
-      { id: 4, label: 'Frame IV', gradient: 'from-yellow-950 to-amber-900' },
+      frame(
+        'golden-hour',
+        1,
+        'Frame I',
+        'from-amber-950 to-yellow-800',
+        'Replace this with your first memory — one or two sentences about what was happening.',
+      ),
+      frame(
+        'golden-hour',
+        2,
+        'Frame II',
+        'from-orange-900 to-amber-700',
+        'Replace this with your second memory for this collection.',
+      ),
+      frame(
+        'golden-hour',
+        3,
+        'Frame III',
+        'from-red-950 to-orange-800',
+        'Replace this with your third memory for this collection.',
+      ),
+      frame(
+        'golden-hour',
+        4,
+        'Frame IV',
+        'from-yellow-950 to-amber-900',
+        'Replace this with your fourth memory for this collection.',
+      ),
     ],
   },
   {
-    id: 'strip-ocean',
+    id: 'ocean-breeze',
     title: 'Ocean Breeze',
     accent: 'from-teal-900 via-cyan-800 to-blue-900',
     frames: [
-      { id: 1, label: 'Frame I', gradient: 'from-teal-950 to-cyan-800' },
-      { id: 2, label: 'Frame II', gradient: 'from-cyan-900 to-sky-700' },
-      { id: 3, label: 'Frame III', gradient: 'from-blue-950 to-indigo-800' },
-      { id: 4, label: 'Frame IV', gradient: 'from-sky-950 to-teal-900' },
+      frame(
+        'ocean-breeze',
+        1,
+        'Frame I',
+        'from-teal-950 to-cyan-800',
+        'Replace this with your first memory — one or two sentences about what was happening.',
+      ),
+      frame(
+        'ocean-breeze',
+        2,
+        'Frame II',
+        'from-cyan-900 to-sky-700',
+        'Replace this with your second memory for this collection.',
+      ),
+      frame(
+        'ocean-breeze',
+        3,
+        'Frame III',
+        'from-blue-950 to-indigo-800',
+        'Replace this with your third memory for this collection.',
+      ),
+      frame(
+        'ocean-breeze',
+        4,
+        'Frame IV',
+        'from-sky-950 to-teal-900',
+        'Replace this with your fourth memory for this collection.',
+      ),
     ],
   },
 ]
