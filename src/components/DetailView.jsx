@@ -28,7 +28,7 @@ export default function DetailView({ strip, onReset, visible }) {
       >
         <header className="mb-8 text-center">
           <p className="text-[10px] tracking-[0.4em] text-booth-gold/60 uppercase">
-            Your Memories
+            Our Memories
           </p>
           <h2
             className="mt-2 text-3xl text-booth-cream"
