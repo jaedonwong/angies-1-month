@@ -87,7 +87,7 @@ export default function Interior({
                     className="text-2xl leading-snug text-booth-cream sm:text-3xl"
                     style={{ fontFamily: 'var(--font-display)' }}
                   >
-                    Happy 1 Month Baby
+                    Happy 1 Month Baby ❤️
                   </p>
                   <p className="mt-3 text-[10px] tracking-[0.3em] text-booth-cream/40 uppercase">
                     Smile. Our Memories Await ♡
