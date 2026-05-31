@@ -296,7 +296,18 @@ export const PHOTO_STRIPS = [
   },
 ]
 
+let lastStripId = null
+
 export function pickRandomStrip() {
-  const index = Math.floor(Math.random() * PHOTO_STRIPS.length)
-  return PHOTO_STRIPS[index]
+  if (PHOTO_STRIPS.length === 0) return null
+  if (PHOTO_STRIPS.length === 1) return PHOTO_STRIPS[0]
+
+  const candidates =
+    lastStripId === null
+      ? PHOTO_STRIPS
+      : PHOTO_STRIPS.filter((strip) => strip.id !== lastStripId)
+
+  const strip = candidates[Math.floor(Math.random() * candidates.length)]
+  lastStripId = strip.id
+  return strip
 }
